@@ -21,7 +21,7 @@ export default function App() {
   );
 }
 
-//👉NAVIGATION: Use Link to let the user change the URL or useNavigate to do it yourself (like after form submissions):
+// 👉NAVIGATION: Use Link to let the user change the URL or useNavigate to do it yourself (like after form submissions):
 //Link is changing the URL without causing a full page reload.
 
 /* 👉Let's get some automatic, persistent layout handling by doing just two things:
@@ -39,3 +39,12 @@ export default function App() {
       Note that the key of the param on the params object is the same as the dynamic segment in the route path:
       :invoiceId -> params.invoiceId
 */
+
+// 👉Active links: añadir style a un link deacuerdo a si uno lo selecciona  --> ver Invoices.jsx
+
+/* 👉Navigating Programmatically   
+sometimes you, the programmer, want to change the URL. A very common use case is after a data update like creating or deleting a record.
+Let's add a button that marks the invoice as paid and then navigates to the index route.
+    -see data.js / deleteInvoice(number)
+    -invoice.jsx
+    */

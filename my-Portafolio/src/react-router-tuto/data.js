@@ -37,3 +37,10 @@ export function getInvoices() {
 export function getInvoice(number) {
   return invoices.find((invoice) => invoice.number === number);
 }
+
+export function deleteInvoice(number) {
+  //this function deletes an invoice from our fake data store:
+  //used in invoice.jsx
+  invoices = invoices.filter((invoice) => invoice.number !== number); //devuelve la lista invoices pero sin el objeto que da false
+  //no es muy performant porque esta generando un nuevo array de los objetos que pasan la prueba, seria mejor hacerlo con una tabla hash
+}
