@@ -1,6 +1,4 @@
-import "./index.css";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
@@ -34,34 +32,19 @@ import React from "react";
 
 export default function Router6() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/myapps" element={<Navigate replace to="/learn" />} />
-        <Route path="/learn" element={<Learn />}>
-          <Route path="courses" element={<Courses />}>
-            <Route path=":courseId" element={<CourseId />} />
-          </Route>
-          <Route path="bundles" element={<Bundles />} />
+    <Routes>
+      <Route path="/myapps" element={<Navigate replace to="/learn" />} />
+      <Route path="/learn" element={<Learn />}>
+        <Route path="courses" element={<Courses />}>
+          <Route path=":courseId" element={<CourseId />} />
         </Route>
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </Router>
+        <Route path="bundles" element={<Bundles />} />
+      </Route>
+      <Route path="/dashboard" element={<Dashboard />} />
+    </Routes>
   );
 }
 
-//lo que sigue es lo que creariamos como componentes pero los pondre aqui
-//para entender mejor
-//Home component
-function Home() {
-  return (
-    <div>
-      <h1>HOME ROUTE</h1>
-    </div>
-  );
-}
-
-//Learn component
 function Learn() {
   return (
     <div>
@@ -115,7 +98,7 @@ function Bundles() {
 }
 function CourseId() {
   const navigate = useNavigate();
-  const { courseId } = useParams(); //-courseId porque asi es como se puso en el Route
+  const { courseId } = useParams(); //!-courseId porque asi es como se puso en el Route
   return (
     <div>
       <h1>El parametro de la URL es: {courseId}</h1>
