@@ -77,6 +77,7 @@ export default function Tenzies() {
       <button className="roll-dice" onClick={rollDice}>
         {tenzies ? "New Game" : "Roll"}
       </button>
+      <p>{() => "💩"}</p>
     </main>
   );
 }
