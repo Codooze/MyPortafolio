@@ -6,19 +6,21 @@ import { nanoid } from "nanoid";
 
 export default function Tenzies() {
   const [dice, setDice] = React.useState(allNewDice());
-  const [tenzies, setTenzies] = React.useState(false);
+  const [tenzies, setTenzies] = React.useState({
+    hasWon: false,
+    rollCounter: 0,
+  });
 
   React.useEffect(() => {
     const allHeld = dice.every((die) => die.isHeld);
     const firstValue = dice[0].value;
     const allSameValue = dice.every((die) => die.value === firstValue);
     if (allHeld && allSameValue) {
-      setTenzies(true);
+      setTenzies((prev) => ({ ...prev, hasWon: true }));
     }
   }, [dice]);
 
   function generateNewDie() {
-    //TODO use the math.ramdom to access the key of an object where I will have dots ... to be shown using grid on the die
     return {
       value: Math.ceil(Math.random() * 6),
       isHeld: false,
@@ -35,14 +37,15 @@ export default function Tenzies() {
   }
 
   function rollDice() {
-    if (!tenzies) {
+    if (!tenzies.hasWon) {
+      setTenzies((prev) => ({ ...prev, rollCounter: prev.rollCounter + 1 }));
       setDice((oldDice) =>
         oldDice.map((die) => {
           return die.isHeld ? die : generateNewDie();
         })
       );
     } else {
-      setTenzies(false);
+      setTenzies(() => ({ hasWon: false, rollCounter: 0 }));
       setDice(allNewDice());
     }
   }
@@ -63,10 +66,9 @@ export default function Tenzies() {
       holdDice={() => holdDice(die.id)}
     />
   ));
-
   return (
     <main>
-      {tenzies && <h1>You won 🥳 here is your potato 🥔</h1>}
+      {tenzies.hasWon && <h1>You won 🥳 here is your potato 🥔</h1>}
 
       <h1 className="title">Tenzies</h1>
       <p className="instructions">
@@ -75,9 +77,9 @@ export default function Tenzies() {
       </p>
       <div className="dice-container">{diceElements}</div>
       <button className="roll-dice" onClick={rollDice}>
-        {tenzies ? "New Game" : "Roll"}
+        {tenzies.hasWon ? "New Game" : "Roll"}
       </button>
-      <p>{() => "💩"}</p>
+      <span>🎲{tenzies.rollCounter}</span>
     </main>
   );
 }

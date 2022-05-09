@@ -13,7 +13,7 @@ export default function Die(props) {
     } while (count < props.value);
     return arr;
   };
-  const hi = () => "hihi";
+
   return (
     <div className="die-face" style={styles} onClick={props.holdDice}>
       {dots()}
