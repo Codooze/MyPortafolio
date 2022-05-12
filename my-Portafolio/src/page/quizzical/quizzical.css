@@ -12,6 +12,8 @@
     "footer footer footer";
   align-items: center;
   justify-items: center;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
 }
 
 .section-quizzical {
@@ -35,4 +37,22 @@
   text-align: center;
   color: rgba(245, 247, 251, 1);
   border-radius: 15px;
+}
+
+.h1-quizzical {
+  font-family: "Karla";
+  font-weight: 700;
+  font-size: 31.25px;
+  margin: 0 0;
+}
+
+.imgFoot-quizzical {
+  grid-row: 3;
+  justify-self: left;
+  align-self: end;
+}
+.imgTop-quizzical {
+  grid-column: 3;
+  justify-self: right;
+  align-self: top;
 }

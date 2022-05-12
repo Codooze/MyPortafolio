@@ -2,11 +2,18 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
+.fullPage-tenzies {
   background-color: #0b2434;
   padding: 20px;
   font-family: "Karla", sans-serif;
+
+  display: grid;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vmax;
+  justify-items: center;
 }
 
 main.tenzies {

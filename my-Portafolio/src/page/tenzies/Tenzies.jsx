@@ -87,19 +87,21 @@ export default function Tenzies() {
     },
   };
   return (
-    <main className="tenzies">
-      {tenzies.hasWon && <h1>You won 🥳 here is your potato 🥔</h1>}
+    <div className="fullPage-tenzies">
+      <main className="tenzies">
+        {tenzies.hasWon && <h1>You won 🥳 here is your potato 🥔</h1>}
 
-      <h1 className="title">Tenzies</h1>
-      <p className="instructions">
-        Roll until all dice are the same. Click each die to freeze it at its
-        current value between rolls.
-      </p>
-      <div className="dice-container">{diceElements}</div>
-      <button className="roll-dice" onClick={rollDice}>
-        {tenzies.hasWon ? "New Game" : "Roll"}
-      </button>
-      <span>🎲{tenzies.rollCounter}</span>
-    </main>
+        <h1 className="title">Tenzies</h1>
+        <p className="instructions">
+          Roll until all dice are the same. Click each die to freeze it at its
+          current value between rolls.
+        </p>
+        <div className="dice-container">{diceElements}</div>
+        <button className="roll-dice" onClick={rollDice}>
+          {tenzies.hasWon ? "New Game" : "Roll"}
+        </button>
+        <span>🎲{tenzies.rollCounter}</span>
+      </main>
+    </div>
   );
 }
