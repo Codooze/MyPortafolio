@@ -66,8 +66,28 @@ export default function Tenzies() {
       holdDice={() => holdDice(die.id)}
     />
   ));
+
+  var stylingObject = {
+    div: {
+      color: "red",
+      border: "1px solid red",
+    },
+    input: {
+      margin: "2px",
+      padding: "5px",
+    },
+  };
+
+  const style = {
+    body: {
+      margin: "0",
+      backgroundColor: "#0b2434",
+      padding: "20px",
+      fontFamily: "Karla, sans-serif",
+    },
+  };
   return (
-    <main>
+    <main className="tenzies">
       {tenzies.hasWon && <h1>You won 🥳 here is your potato 🥔</h1>}
 
       <h1 className="title">Tenzies</h1>
