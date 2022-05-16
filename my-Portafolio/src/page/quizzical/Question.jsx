@@ -9,7 +9,7 @@ export default function Question({
     txt.innerHTML = html;
     return txt.value;
   };
-
+  //TODO darle style a la respuesta correcta y las incorrectas luego mandarlos a renderizar pero antes de eso revolverlos, puede ser creando un objeto que sea de tipo input y luego al clicker la form correr una funcion que muestre los resultados aplicando el stylo de acuerdo a si se responde bien o mal*/
   return (
     <>
       <Suspense fallback={<div>loading...</div>}>

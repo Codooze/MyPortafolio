@@ -5,17 +5,20 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const API =
   "https://opentdb.com/api.php?amount=5&category=31&difficulty=medium&type=multiple";
 export default function Quiz() {
-  const { data, error } = useSWR(API, fetcher, { suspense: true });
+  const { data, error } = useSWR(API, fetcher, {
+    suspense: true,
+    revalidateOnFocus: false,
+  });
   if (error) return <div>failed to load</div>;
-  // if (!data) return <div>loading...</div>;
 
-  console.table(
-    data.results.map(({ question, correct_answer, incorrect_answers }) => ({
-      question,
-      correct_answer,
-      incorrect_answers,
-    }))
-  );
+  // console.table(
+  //   data.results.map(({ question, correct_answer, incorrect_answers }) => ({
+  //     question,
+  //     correct_answer,
+  //     incorrect_answers,
+  //   }))
+  // );
+
   const questionsData = data.results.map(
     ({ question, correct_answer, incorrect_answers }, index) => (
       <Question

@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "dev",
+      "path": "my-Portafolio",
+      "problemMatcher": [],
+      "label": "npm: dev - my-Portafolio",
+      "detail": "vite"
+    }
+  ]
+}
