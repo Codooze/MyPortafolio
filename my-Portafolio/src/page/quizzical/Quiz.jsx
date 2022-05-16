@@ -4,6 +4,7 @@ import Question from "./Question.jsx";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const API =
   "https://opentdb.com/api.php?amount=5&category=31&difficulty=medium&type=multiple";
+//? Cómo usar SWR 🤌 https://www.youtube.com/watch?v=F1o_0umlXbU&list=PLCYRF3rQd5rrO-e6glGMmiXhE3YU_3dgy&index=13
 export default function Quiz() {
   const { data, error } = useSWR(API, fetcher, {
     suspense: true,
