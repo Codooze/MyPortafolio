@@ -1,0 +1,20 @@
+/* input.input-question[type="radio"] {
+  display: none;
+} */
+input.input-question[type="radio"]:checked + .radio-question {
+  background-color: #20add4;
+  color: #000000;
+  line-height: 100px;
+  text-align: center;
+}
+.radio-question {
+  display: block;
+  background-color: #000000;
+  color: #ffffff;
+  left: 200px;
+  top: 8px;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}
