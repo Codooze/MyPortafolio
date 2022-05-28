@@ -1,6 +1,7 @@
-import "./quiz.css";
+import React from "react";
 import useSWR, { mutate } from "swr";
 import Question from "./Question.jsx";
+import "./quiz.css";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const API =
   "https://opentdb.com/api.php?amount=5&category=31&difficulty=medium&type=multiple";
@@ -11,16 +12,27 @@ export default function Quiz() {
     revalidateOnFocus: false,
   });
   if (error) return <div>failed to load</div>;
+  //TODO add a isHeld property to both correct and incorrect answers
 
-  // console.table(
-  //   data.results.map(({ question, correct_answer, incorrect_answers }) => ({
-  //     question,
-  //     correct_answer,
-  //     incorrect_answers,
-  //   }))
+  // const bad_answers = data.results.map(({ incorrect_answers }) =>
+  //   incorrect_answers.map((element) => ({ response: element, isHeld: false }))
   // );
 
-  const questionsData = data.results.map(
+  const questionData = data.results.map(
+    ({ question, correct_answer, incorrect_answers }, index) => ({
+      question: question,
+      correct_answer: { correct: correct_answer, isHeld: false },
+      incorrect_answers: incorrect_answers.reduce(function (result, item) {
+        result[item] = true; //a, b, c
+        return result;
+      }, {}),
+    })
+  );
+  //! console.log(questionData);
+  // console.log(incorrect_answers.map((e) => e.map((e) => e.isHeld)));
+  const [heldData, setHeldData] = React.useState(questionData);
+  // console.log(heldData);
+  const QuetionsAndAnswers = heldData.map(
     ({ question, correct_answer, incorrect_answers }, index) => (
       <Question
         key={index}
@@ -30,10 +42,11 @@ export default function Quiz() {
       />
     )
   );
+
   return (
     <section className="container-quiz">
       <p>Data:</p>
-      {questionsData}
+      {QuetionsAndAnswers}
     </section>
   );
 }

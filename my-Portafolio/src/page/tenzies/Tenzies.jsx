@@ -67,25 +67,25 @@ export default function Tenzies() {
     />
   ));
 
-  var stylingObject = {
-    div: {
-      color: "red",
-      border: "1px solid red",
-    },
-    input: {
-      margin: "2px",
-      padding: "5px",
-    },
-  };
+  // var stylingObject = {
+  //   div: {
+  //     color: "red",
+  //     border: "1px solid red",
+  //   },
+  //   input: {
+  //     margin: "2px",
+  //     padding: "5px",
+  //   },
+  // };
 
-  const style = {
-    body: {
-      margin: "0",
-      backgroundColor: "#0b2434",
-      padding: "20px",
-      fontFamily: "Karla, sans-serif",
-    },
-  };
+  // const style = {
+  //   body: {
+  //     margin: "0",
+  //     backgroundColor: "#0b2434",
+  //     padding: "20px",
+  //     fontFamily: "Karla, sans-serif",
+  //   },
+  // };
   return (
     <div className="fullPage-tenzies">
       <main className="tenzies">
