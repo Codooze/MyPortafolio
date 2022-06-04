@@ -4,6 +4,8 @@ export default function Question({
   question,
   correct_answer,
   incorrect_answers,
+  handleClick,
+  index,
 }) {
   var decodeHTML = function (html) {
     var txt = document.createElement("textarea");
@@ -11,26 +13,20 @@ export default function Question({
     return txt.value;
   };
   const toggle = () => {};
-  // const style = {
-  //   backgroundColor : incorrect_answers
-  // }
-  const incorrect_A = Object.keys(incorrect_answers);
-  const IncorrectAns = incorrect_A.map((e) =>
-    console.log(incorrect_answers[e])
-  );
-  const style = (key) => ({
-    backgroundColor: incorrect_answers[key] ? "#59E391" : "white",
+
+  const style = (isHeld) => ({
+    backgroundColor: isHeld ? "#59E391" : "white",
   });
 
-  const bad = incorrect_A.map((e) => (
+  const wrongAns = incorrect_answers.map(({ answer, isHeld, id }) => (
     <button
-      onClick={toggle}
+      onClick={() => handleClick(id, index)}
       className="button-question"
-      key={e}
-      id={e}
-      style={style(e)}
+      key={answer}
+      id={answer}
+      style={style(isHeld)}
     >
-      {e}
+      {answer}
     </button>
   ));
 
@@ -46,7 +42,7 @@ export default function Question({
       <Suspense fallback={<div>loading...</div>}>
         <h2 className="h2-quiz">{decodeHTML(question)} </h2>
         {/* <p>{decodeHTML(correct_answer)} </p> */}
-        {bad}
+        {wrongAns}
       </Suspense>
     </>
   );
