@@ -16,32 +16,6 @@ export default function Quiz() {
   const [heldData, setHeldData] = useState(questionData());
   // const [heldIncorrectData, setHeldIncData] = useState(incorrectData());
 
-  function incorre() {
-    const objEX = [
-      {
-        answer: "respuesta",
-        id: 0,
-        isHeld: false,
-      },
-      {
-        answer: "respuesta",
-        id: 1,
-        isHeld: false,
-      },
-    ];
-    return objEX;
-  }
-  //! console.log(heldIncorrectData[1].id);
-
-  // function incorrectData() {
-  //   let editedData = {};
-  //   editedData = data.results.map(({ incorrect_answers }, index) =>
-  //     incorrect_answers.map((e) => ({ answer: e, isHeld: false, id: index }))
-  //   );
-  //   // console.table(editedData);
-  //   console.log(editedData);
-  //   return editedData;
-  // }
   function questionData() {
     let editedData = {};
     editedData = data.results.map(
@@ -58,35 +32,64 @@ export default function Quiz() {
     );
     return editedData;
   }
-  //TODO ver hold dice part 1 en scrimba
-  //TODO No permiter que poner isHeld a mas de una opción en la misma respuesta 👈
-  function holdButton(innerIndex, outerIndex) {
+  //TODO revisar si las respuestas correctas tienen isHeld activo si lo tienen sumar 20 ptos
+  function holdButton(...args) {
+    /*
+    args[0]= boolean
+    args[1]=outerIndex
+    args[2]=innerIndex
+    */
     //! setHeldIncData((oldDice) =>
     //!   oldDice.map((die) => {
     //!     return die.id === id ? { ...die, isHeld: !die.isHeld } : die;
     //!   })
     //! ); codigo de ejemplo
-    const newHeldState = heldData[outerIndex].incorrect_answers.map((e, id) => {
-      // console.log(`⭐e.id:  ${e.id} |  ${e.id === outerIndex ? "YES" : "NO"}`);
-      return e.id === innerIndex ? { ...e, isHeld: !e.isHeld } : e;
-    });
-    // console.log(`⭐ outer:${outerIndex} | inner: ${innerIndex} | `); Check the outer and inner poss selected
+    let newHeldState;
+    if (!args[0]) {
+      newHeldState = heldData[args[1]].incorrect_answers.map((e, id) => {
+        return e.id === args[2]
+          ? { ...e, isHeld: !e.isHeld }
+          : { ...e, isHeld: false };
+      });
+      handleClickCorrect(args[1], false);
+    } else {
+      newHeldState = heldData[args[1]].incorrect_answers.map((e, id) => {
+        return { ...e, isHeld: false };
+      });
+    }
 
-    console.log(innerIndex);
+    // console.log(`⭐ outer:${args[1]} | inner: ${args[2]} | `); Check the outer and inner poss selected
     setHeldData((prev) => {
-      return prev.map((e, awa) => {
+      return prev.map((e) => {
         // console.log(
-        //   `⭐${e.index} | ${innerIndex} ➡️ ${e.index} | ${outerIndex} ${
-        //     e.index === outerIndex ? "YES" : "NO"
+        //   `⭐${e.index} | ${args[2]} ➡️ ${e.index} | ${args[1]} ${
+        //     e.index === args[1] ? "YES" : "NO"
         //   }`
         // ); check poss we are in
-        return e.index === outerIndex
+        return e.index === args[1]
           ? { ...e, incorrect_answers: newHeldState }
           : e;
       });
     });
   }
-  // console.table(heldData);
+  function handleClickCorrect(outerIndex, setIsHeld = true) {
+    const newHeldState = heldData[outerIndex].correct_answer;
+    newHeldState.isHeld = !newHeldState.isHeld;
+    // console.log(`🤯 ${newHeldState.isHeld} | ${newHeldState.correct}`);
+    if (!setIsHeld) {
+      newHeldState.isHeld = false;
+    } else {
+      holdButton(true, outerIndex);
+    }
+
+    setHeldData((prev) => {
+      return prev.map((e) => {
+        return e.index === outerIndex
+          ? { ...e, correct_answer: newHeldState }
+          : e;
+      });
+    });
+  }
   const QuetionsAndAnswers = heldData.map(
     ({ question, correct_answer, incorrect_answers, index }, id) => (
       <Question
@@ -96,6 +99,7 @@ export default function Quiz() {
         correct_answer={correct_answer}
         incorrect_answers={incorrect_answers}
         handleClick={holdButton}
+        handleClickCorrect={handleClickCorrect}
       />
     )
   );
