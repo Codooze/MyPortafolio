@@ -3,6 +3,8 @@ import { useState } from "react";
 import useSWR, { mutate } from "swr";
 import Question from "./Question.jsx";
 import "./quiz.css";
+import { Button, RingProgress, Text } from "@mantine/core";
+
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const API =
   "https://opentdb.com/api.php?amount=5&category=31&difficulty=medium&type=multiple";
@@ -14,6 +16,7 @@ export default function Quiz() {
   });
   if (error) return <div>failed to load</div>;
   const [heldData, setHeldData] = useState(questionData());
+  const [endGame, setEndGame] = useState({ points: 0, End: false });
   // const [heldIncorrectData, setHeldIncData] = useState(incorrectData());
 
   function questionData() {
@@ -32,7 +35,18 @@ export default function Quiz() {
     );
     return editedData;
   }
-  //TODO revisar si las respuestas correctas tienen isHeld activo si lo tienen sumar 20 ptos
+  //TODO impedir que se cambien las respuestas una ves finalizado el quiz, Agregar un botton de jugar de nuevo
+  function evaluateAnswers() {
+    console.log(heldData.length);
+    let points = 0;
+    for (let i = 0; i < heldData.length; i++) {
+      if (heldData[i].correct_answer.isHeld) {
+        points = points + 20;
+      }
+    }
+    setEndGame((prev) => ({ points: points, End: true }));
+    console.log(endGame);
+  }
   function holdButton(...args) {
     /*
     args[0]= boolean
@@ -108,6 +122,25 @@ export default function Quiz() {
     <section className="container-quiz">
       <p>Data:</p>
       {QuetionsAndAnswers}
+      <Button
+        onClick={evaluateAnswers}
+        className="button-send"
+        variant="gradient"
+        gradient={{ from: "teal", to: "lime", deg: 105 }}
+      >
+        Send Answers
+      </Button>
+      {endGame.End && (
+        <RingProgress
+          className="RingProgress-Quiz"
+          sections={[{ value: endGame.points, color: "blue" }]}
+          label={
+            <Text color="blue" weight={700} align="center" size="xl">
+              {endGame.points}%
+            </Text>
+          }
+        />
+      )}
     </section>
   );
 }

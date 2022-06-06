@@ -13,7 +13,7 @@ export default function Question({
     txt.innerHTML = html;
     return txt.value;
   };
-
+  //TODO dar feedback cuando se "envien" las respuestas dar color a las respuestas correctas e incorrectas usando un className renderizado condiccionalmente
   const style = (isHeld) => ({
     backgroundColor: isHeld ? "#59E391" : "white",
   });
@@ -41,9 +41,7 @@ export default function Question({
       </button>
     );
 
-  //TODO 1# usar concat revolver los botones para que cambien de lugar
-  //TODO 2# al darle click a enviar check si la opcion escogida es la correcta si lo es sumar 1 sino restar crear un status en Quiz para esto
-  //TODO renderizar una clase condicionalmente si es se seleciona un button
+  //TODO 1# revolver los botones para que cambien de lugar
   return (
     <>
       <Suspense fallback={<div>loading...</div>}>

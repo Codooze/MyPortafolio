@@ -7,11 +7,20 @@
 
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  background: rgba(245, 247, 251, 1);
+  /* background: rgba(245, 247, 251, 1); */
 }
 .h2-quiz {
   grid-column: 2/3;
   background-color: aquamarine;
+}
+.button-send {
+  grid-column: 2/3;
+}
+.RingProgress-Quiz {
+  grid-column: 3/3;
+  justify-self: center;
+  align-self: center;
+  position: absolute;
 }
 hr {
   grid-column: 2/3;

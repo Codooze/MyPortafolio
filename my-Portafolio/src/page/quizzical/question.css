@@ -1,7 +1,7 @@
 .button-question {
   grid-column: 2/3;
 }
-.button-question:focus {
+/* .button-question:focus {
   background-color: antiquewhite;
 }
 .button-question:active {
@@ -9,4 +9,4 @@
 }
 .button-question:hover {
   background-color: brown;
-}
+} */
