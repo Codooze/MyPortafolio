@@ -114,6 +114,7 @@ export default function Quiz() {
         incorrect_answers={incorrect_answers}
         handleClick={holdButton}
         handleClickCorrect={handleClickCorrect}
+        endGame={endGame.End}
       />
     )
   );

@@ -7,6 +7,7 @@ export default function Question({
   handleClick,
   handleClickCorrect,
   index,
+  endGame,
 }) {
   var decodeHTML = function (html) {
     var txt = document.createElement("textarea");
@@ -17,15 +18,20 @@ export default function Question({
   const style = (isHeld) => ({
     backgroundColor: isHeld ? "#59E391" : "white",
   });
+  const showResults = () => ({
+    backgroundColor: "red",
+  });
   // console.table(correct_answer);
-  const wrongAns = incorrect_answers
+  const Answers = incorrect_answers
     .map(({ answer, isHeld, id }) => (
       <button
         onClick={() => handleClick(false, index, id)}
         className="button-question"
         key={answer}
         id={answer}
-        style={style(isHeld)}
+        style={
+          !endGame ? style(isHeld) : isHeld ? showResults() : style(isHeld)
+        }
       >
         {decodeHTML(answer)}
       </button>
@@ -47,7 +53,7 @@ export default function Question({
       <Suspense fallback={<div>loading...</div>}>
         <h2 className="h2-quiz">{decodeHTML(question)} </h2>
         {/* <p>{decodeHTML(correct_answer)} </p> */}
-        {wrongAns}
+        {Answers}
       </Suspense>
     </>
   );
