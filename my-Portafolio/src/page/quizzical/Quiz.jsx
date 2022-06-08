@@ -1,9 +1,9 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useSWR, { mutate } from "swr";
 import Question from "./Question.jsx";
 import "./quiz.css";
-import { Button, RingProgress, Text } from "@mantine/core";
+import { Button, RingProgress, Text, Overlay } from "@mantine/core";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const API =
@@ -17,7 +17,6 @@ export default function Quiz() {
   if (error) return <div>failed to load</div>;
   const [heldData, setHeldData] = useState(questionData());
   const [endGame, setEndGame] = useState({ points: 0, End: false });
-  // const [heldIncorrectData, setHeldIncData] = useState(incorrectData());
 
   function questionData() {
     let editedData = {};
@@ -25,95 +24,79 @@ export default function Quiz() {
       ({ question, correct_answer, incorrect_answers }, index) => ({
         index: index,
         question: question,
-        correct_answer: { correct: correct_answer, isHeld: false },
-        incorrect_answers: incorrect_answers.map((e, id) => ({
-          answer: e,
-          isHeld: false,
-          id: id,
-        })),
+        // correct_answer: { correct: correct_answer, isHeld: false },
+        incorrect_answers: incorrect_answers
+          .map((e, id) => ({
+            answer: e,
+            isHeld: false,
+            id: id,
+          }))
+          .concat({
+            answer: correct_answer,
+            isHeld: false,
+            id: 3,
+            isCorrect: true,
+          })
+          .sort((a, b) => Math.random() - 0.5),
       })
     );
     return editedData;
   }
+  console.log(heldData);
   //TODO impedir que se cambien las respuestas una ves finalizado el quiz, Agregar un botton de jugar de nuevo
   function evaluateAnswers() {
-    console.log(heldData.length);
     let points = 0;
+    const answersLength = heldData[0].incorrect_answers.length;
+    console.log(heldData[0].incorrect_answers[2].isCorrect);
     for (let i = 0; i < heldData.length; i++) {
-      if (heldData[i].correct_answer.isHeld) {
-        points = points + 20;
+      for (let j = 0; j < answersLength; j++) {
+        if (
+          heldData[i].incorrect_answers[j].isHeld &&
+          heldData[i].incorrect_answers[j].isCorrect
+        ) {
+          points = points + 20;
+        }
       }
     }
     setEndGame((prev) => ({ points: points, End: true }));
     console.log(endGame);
   }
-  function holdButton(...args) {
-    /*
-    args[0]= boolean
-    args[1]=outerIndex
-    args[2]=innerIndex
-    */
+  function holdButton(outerIndex, innerIndex) {
     //! setHeldIncData((oldDice) =>
     //!   oldDice.map((die) => {
     //!     return die.id === id ? { ...die, isHeld: !die.isHeld } : die;
     //!   })
     //! ); codigo de ejemplo
-    let newHeldState;
-    if (!args[0]) {
-      newHeldState = heldData[args[1]].incorrect_answers.map((e, id) => {
-        return e.id === args[2]
-          ? { ...e, isHeld: !e.isHeld }
-          : { ...e, isHeld: false };
-      });
-      handleClickCorrect(args[1], false);
-    } else {
-      newHeldState = heldData[args[1]].incorrect_answers.map((e, id) => {
-        return { ...e, isHeld: false };
-      });
-    }
 
-    // console.log(`⭐ outer:${args[1]} | inner: ${args[2]} | `); Check the outer and inner poss selected
+    const newHeldState = heldData[outerIndex].incorrect_answers.map((e, id) => {
+      return e.id === innerIndex
+        ? { ...e, isHeld: !e.isHeld }
+        : { ...e, isHeld: false };
+    });
+
+    // console.log(`⭐ outer:${outerIndex} | inner: ${innerIndex} | `); Check the outer and inner poss selected
     setHeldData((prev) => {
       return prev.map((e) => {
         // console.log(
-        //   `⭐${e.index} | ${args[2]} ➡️ ${e.index} | ${args[1]} ${
-        //     e.index === args[1] ? "YES" : "NO"
+        //   `⭐${e.index} | ${innerIndex} ➡️ ${e.index} | ${outerIndex} ${
+        //     e.index === outerIndex ? "YES" : "NO"
         //   }`
         // ); check poss we are in
-        return e.index === args[1]
+        return e.index === outerIndex
           ? { ...e, incorrect_answers: newHeldState }
           : e;
       });
     });
   }
-  function handleClickCorrect(outerIndex, setIsHeld = true) {
-    const newHeldState = heldData[outerIndex].correct_answer;
-    newHeldState.isHeld = !newHeldState.isHeld;
-    // console.log(`🤯 ${newHeldState.isHeld} | ${newHeldState.correct}`);
-    if (!setIsHeld) {
-      newHeldState.isHeld = false;
-    } else {
-      holdButton(true, outerIndex);
-    }
 
-    setHeldData((prev) => {
-      return prev.map((e) => {
-        return e.index === outerIndex
-          ? { ...e, correct_answer: newHeldState }
-          : e;
-      });
-    });
-  }
   const QuetionsAndAnswers = heldData.map(
-    ({ question, correct_answer, incorrect_answers, index }, id) => (
+    ({ question, incorrect_answers, index }, id) => (
       <Question
         key={id}
         index={index}
         question={question}
-        correct_answer={correct_answer}
-        incorrect_answers={incorrect_answers}
+        answers={incorrect_answers}
         handleClick={holdButton}
-        handleClickCorrect={handleClickCorrect}
         endGame={endGame.End}
       />
     )
@@ -122,6 +105,7 @@ export default function Quiz() {
   return (
     <section className="container-quiz">
       <p>Data:</p>
+      {endGame.End && <Overlay opacity={0} color="#000" zIndex={5} />}
       {QuetionsAndAnswers}
       <Button
         onClick={evaluateAnswers}
