@@ -1,5 +1,7 @@
 .button-question {
   grid-column: 2/3;
+  display: flex;
+  justify-content: space-evenly;
 }
 /* .button-question:focus {
   background-color: antiquewhite;

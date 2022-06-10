@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import useSWR, { mutate } from "swr";
 import Question from "./Question.jsx";
 import "./quiz.css";
+import Blob from "../../assets/blob.png";
+import BlobsYellow from "../../assets/blobsYellow.png";
 import { Button, RingProgress, Text, Overlay } from "@mantine/core";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -104,7 +106,8 @@ export default function Quiz() {
 
   return (
     <section className="container-quiz">
-      <p>Data:</p>
+      <img className="imgFoot-quiz" src={Blob} alt="" />
+      <img className="imgTop-quiz" src={BlobsYellow} alt="" />
       {endGame.End && <Overlay opacity={0} color="#000" zIndex={5} />}
       {QuetionsAndAnswers}
       <Button

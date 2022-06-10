@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import "./question.css";
 import React, { useState } from "react";
+import { Button } from "@mantine/core";
+
 export default function Question({
   question,
   answers,
@@ -18,16 +20,18 @@ export default function Question({
   };
   const style = (isHeld) => ({
     backgroundColor: isHeld ? "#59E391" : "white",
+    color: isHeld ? "rgb(46, 50, 76)" : "",
   });
   const showBadResults = () => ({
-    backgroundColor: "red",
+    backgroundColor: "rgb(255, 96, 85)",
+    color: "rgb(19, 23, 35)",
   });
   // console.table(correct_answer);
-
+  //TODO organizar los botones en horizontal y que abarquen menos espacio
   const Answers = answers.map(({ answer, isHeld, id, isCorrect }) => (
-    <button
+    <Button
       onClick={() => handleClick(index, id)}
-      className="button-question"
+      variant="white"
       key={answer}
       id={answer}
       style={
@@ -41,23 +45,15 @@ export default function Question({
       }
     >
       {decodeHTML(answer)}
-    </button>
+    </Button>
   ));
-
-  function ramdomOrder() {
-    let i = 0;
-    if (i < 1) {
-      Answers.sort((a, b) => Math.random() - 0.5);
-      i++;
-    }
-  }
 
   return (
     <>
       <Suspense fallback={<div>loading...</div>}>
-        <h2 className="h2-quiz">{decodeHTML(question)} </h2>
+        <h3 className="h3-quiz">{decodeHTML(question)} </h3>
         {/* <p>{decodeHTML(correct_answer)} </p> */}
-        {Answers}
+        <div className="button-question">{Answers}</div>
       </Suspense>
     </>
   );
