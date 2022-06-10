@@ -5,7 +5,14 @@ import Question from "./Question.jsx";
 import "./quiz.css";
 import Blob from "../../assets/blob.png";
 import BlobsYellow from "../../assets/blobsYellow.png";
-import { Button, RingProgress, Text, Overlay } from "@mantine/core";
+import {
+  Button,
+  RingProgress,
+  Text,
+  Overlay,
+  Modal,
+  Group,
+} from "@mantine/core";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const API =
@@ -19,6 +26,7 @@ export default function Quiz() {
   if (error) return <div>failed to load</div>;
   const [heldData, setHeldData] = useState(questionData());
   const [endGame, setEndGame] = useState({ points: 0, End: false });
+  const [opened, setOpened] = useState(false);
 
   function questionData() {
     let editedData = {};
@@ -105,30 +113,58 @@ export default function Quiz() {
   );
 
   return (
-    <section className="container-quiz">
-      <img className="imgFoot-quiz" src={Blob} alt="" />
-      <img className="imgTop-quiz" src={BlobsYellow} alt="" />
-      {endGame.End && <Overlay opacity={0} color="#000" zIndex={5} />}
-      {QuetionsAndAnswers}
-      <Button
-        onClick={evaluateAnswers}
-        className="button-send"
-        variant="gradient"
-        gradient={{ from: "teal", to: "lime", deg: 105 }}
-      >
-        Send Answers
-      </Button>
-      {endGame.End && (
-        <RingProgress
-          className="RingProgress-Quiz"
-          sections={[{ value: endGame.points, color: "blue" }]}
-          label={
-            <Text color="blue" weight={700} align="center" size="xl">
-              {endGame.points}%
-            </Text>
-          }
-        />
-      )}
-    </section>
+    <>
+      <section className="container-quiz">
+        <img className="imgFoot-quiz" src={Blob} alt="" />
+        <img className="imgTop-quiz" src={BlobsYellow} alt="" />
+        {endGame.End && <Overlay opacity={0} color="#000" zIndex={5} />}
+        {QuetionsAndAnswers}
+        <Button
+          onClick={evaluateAnswers}
+          className="button-send"
+          variant="gradient"
+          gradient={{ from: "teal", to: "lime", deg: 105 }}
+        >
+          Send Answers
+        </Button>
+        {endGame.End && (
+          <>
+            <RingProgress
+              className="RingProgress-Quiz"
+              sections={[{ value: endGame.points, color: "blue" }]}
+              label={
+                <Text color="blue" weight={700} align="center" size="xl">
+                  {endGame.points}%
+                </Text>
+              }
+            />
+          </>
+        )}
+        <Modal
+          centered
+          transition="fade"
+          transitionDuration={600}
+          transitionTimingFunction="ease"
+          opened={opened}
+          onClose={() => setOpened(false)}
+          title="Good! Now what do you want to do?"
+        >
+          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+            <Button
+              onClick={() => {
+                setEndGame({ points: 0, End: false });
+                setOpened(false);
+              }}
+            >
+              Play
+            </Button>
+            <Button>See the Answers 😿</Button>
+          </div>
+        </Modal>
+      </section>
+      <Group position="center" className="playAgain-Quiz">
+        <Button onClick={() => setOpened(true)}>Try again?</Button>
+      </Group>
+    </>
   );
 }

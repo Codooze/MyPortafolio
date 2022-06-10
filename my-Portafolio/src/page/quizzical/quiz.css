@@ -2,8 +2,8 @@
   top: 0;
   left: 0;
   width: 100vmax;
-  height: 100%;
-  position: absolute;
+  height: 100vh;
+  position: relative;
 
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -19,16 +19,14 @@
 }
 .RingProgress-Quiz {
   grid-column: 3/3;
+  grid-row: 5;
   justify-self: center;
   align-self: center;
-  position: absolute;
 }
-hr {
-  grid-column: 2/3;
-  width: 90%;
-  height: 0;
-  border: 0.794239px solid #dbdef0;
+.playAgain-Quiz {
+  justify-content: flex-end;
 }
+
 .imgFoot-quiz {
   grid-row: 30;
   justify-self: left;
