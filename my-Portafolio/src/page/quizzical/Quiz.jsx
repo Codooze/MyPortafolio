@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useSWR, { mutate } from "swr";
 import Question from "./Question.jsx";
 import "./quiz.css";
@@ -13,6 +13,9 @@ import {
   Modal,
   Group,
   Drawer,
+  Badge,
+  Paper,
+  ScrollArea,
 } from "@mantine/core";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -53,8 +56,8 @@ export default function Quiz() {
     );
     return editedData;
   }
-  console.log(heldData);
-  //TODO impedir que se cambien las respuestas una ves finalizado el quiz, Agregar un botton de jugar de nuevo
+
+  //TODO Acceder al id 3
   function evaluateAnswers() {
     let points = 0;
     const answersLength = heldData[0].incorrect_answers.length;
@@ -70,7 +73,6 @@ export default function Quiz() {
       }
     }
     setEndGame((prev) => ({ points: points, End: true }));
-    console.log(endGame);
   }
   function holdButton(outerIndex, innerIndex) {
     //! setHeldIncData((oldDice) =>
@@ -112,6 +114,26 @@ export default function Quiz() {
       />
     )
   );
+
+  var decodeHTML = function (html) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+  };
+
+  const seeAnswers = heldData.map(({ question, incorrect_answers }) => (
+    <>
+      <Paper shadow="xm" radius="md" p="sm">
+        <h4>{decodeHTML(question)}</h4>
+        <Badge
+          variant="gradient"
+          gradient={{ from: "teal", to: "blue", deg: 60 }}
+        >
+          {decodeHTML(incorrect_answers.find((e) => e.id === 3).answer)}
+        </Badge>
+      </Paper>
+    </>
+  ));
 
   return (
     <>
@@ -175,10 +197,12 @@ export default function Quiz() {
         size="lg"
         opened={opened.drawer}
         onClose={() => setOpened({ ...opened, drawer: false })}
-        title="Register"
+        title="Correct Answers"
         padding="lg"
       >
-        {/* Drawer content */}
+        <ScrollArea style={{ height: "85vh" }} scrollbarSize={4}>
+          {seeAnswers}
+        </ScrollArea>
       </Drawer>
     </>
   );
