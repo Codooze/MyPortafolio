@@ -1,14 +1,17 @@
 .container-quiz {
   top: 0;
   left: 0;
-  width: 100vmax;
-  height: 100vh;
+  width: 80vmax; /*
+  height: 100vh; */
   position: relative;
 
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: repeat(3, auto);
+  justify-content: center;
+  /* border: 10px solid rgb(58, 180, 229); */
   gap: 10px 0px;
   background: rgba(245, 247, 251, 1);
+  margin: auto;
 }
 .h3-quiz {
   grid-column: 2/3;
@@ -18,20 +21,20 @@
   grid-column: 2/3;
 }
 .RingProgress-Quiz {
-  grid-column: 3/3;
-  grid-row: 5;
+  grid-column: -1/-1;
+  position: absolute;
   justify-self: center;
   align-self: center;
 }
 .playAgain-Quiz {
   justify-content: flex-end;
+  margin-top: -35px;
 }
 
 .imgFoot-quiz {
-  grid-row: 30;
-  justify-self: left;
   position: absolute;
   align-self: end;
+  grid-row-end: 13;
 }
 .imgTop-quiz {
   grid-column: 3;

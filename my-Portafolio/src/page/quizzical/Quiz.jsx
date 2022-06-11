@@ -12,6 +12,7 @@ import {
   Overlay,
   Modal,
   Group,
+  Drawer,
 } from "@mantine/core";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -26,7 +27,7 @@ export default function Quiz() {
   if (error) return <div>failed to load</div>;
   const [heldData, setHeldData] = useState(questionData());
   const [endGame, setEndGame] = useState({ points: 0, End: false });
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState({ modal: false, drawer: false });
 
   function questionData() {
     let editedData = {};
@@ -145,26 +146,40 @@ export default function Quiz() {
           transition="fade"
           transitionDuration={600}
           transitionTimingFunction="ease"
-          opened={opened}
-          onClose={() => setOpened(false)}
+          opened={opened.modal}
+          onClose={() => setOpened({ ...opened, modal: false })}
           title="Good! Now what do you want to do?"
         >
           <div style={{ display: "flex", justifyContent: "space-evenly" }}>
             <Button
               onClick={() => {
                 setEndGame({ points: 0, End: false });
-                setOpened(false);
+                setOpened({ ...opened, modal: false });
               }}
             >
               Play
             </Button>
-            <Button>See the Answers 😿</Button>
+            <Button onClick={() => setOpened({ ...opened, drawer: true })}>
+              See the Answers 😿
+            </Button>
           </div>
         </Modal>
       </section>
       <Group position="center" className="playAgain-Quiz">
-        <Button onClick={() => setOpened(true)}>Try again?</Button>
+        <Button onClick={() => setOpened({ ...opened, modal: true })}>
+          Try again?
+        </Button>
       </Group>
+      <Drawer
+        position="right"
+        size="lg"
+        opened={opened.drawer}
+        onClose={() => setOpened({ ...opened, drawer: false })}
+        title="Register"
+        padding="lg"
+      >
+        {/* Drawer content */}
+      </Drawer>
     </>
   );
 }
